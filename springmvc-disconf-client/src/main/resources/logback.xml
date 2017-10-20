@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<configuration>
+
+    <!-- 存放日志文件的要路径 -->
+    <property name="LOG_HOME" value="/home/log"/>
+    <!--日志文件存入路径 -->
+    <property name="PROJECT_NAME" value="${project.artifactId}"/>
+
+    <property name="LOG_HOME_LOG" value="${LOG_HOME}/${PROJECT_NAME}/log"/>
+
+    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method:%L -%msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- service -->
+    <appender name="logFileRolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME_LOG}.txt</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME_LOG}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>100MB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level[%thread]%logger{56}.%method:%L -%msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="com.chy">
+        <level value="INFO"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="WARN"/>
+    </logger>
+
+    <!-- 日志级别 -->
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="logFileRolling"/>
+    </root>
+
+</configuration>
